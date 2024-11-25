@@ -29,16 +29,7 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - id: 'auth'
-        uses: 'google-github-actions/auth@v2'
+      - name: Test for public javascript library vulnerabilities 
+        uses: lirantal/is-website-vulnerable@main
         with:
-          workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-          service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
-
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v2'
-        with:
-          version: '>= 363.0.0'
-
-      - name: 'Use gcloud CLI'
-        run: 'gcloud info'
+          scan-url: "https://yoursite.com"
