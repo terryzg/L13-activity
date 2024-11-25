@@ -25,11 +25,14 @@ jobs:
       pages: write
       id-token: write
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-
-      - name: Test for public javascript library vulnerabilities 
-        uses: lirantal/is-website-vulnerable@main
+      - name: My grading action
+        uses: mygrading/action-for-this-lab@v1.0.0
+        id: events
         with:
-          scan-url: "https://yoursite.com"
+          input_1: whatever input you need
+
+      - name: Grading results
+        uses: githubtraining/looking-glass-action@v1.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          feedback: ${{ steps.events.outputs.reports }} 
