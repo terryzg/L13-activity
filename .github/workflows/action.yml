@@ -28,11 +28,7 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
-jobs:
-  push_to_registry:
-    name: push docker image to hub
-    runs-on: ubuntu-latest
+        
     steps:
       - name: check repository
         uses: actions/checkout@v4
