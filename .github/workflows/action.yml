@@ -3,7 +3,7 @@ name: Build and Deploy
 on: push
 
 permissions:
-  contents: write # Necessary for deploying to GitHub Pages.
+  contents: write 
 
 jobs:
   build:
@@ -37,17 +37,17 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     needs: build
-    concurrency: ci-${{ github.ref }} # Prevents overlapping deployments.
+    concurrency: ci-${{ github.ref }} 
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
 
       - name: Install and Build 🔧
         run: |
-          npm ci
+          npm install
           npm run build
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: build # Folder to deploy.
+          folder: build 
