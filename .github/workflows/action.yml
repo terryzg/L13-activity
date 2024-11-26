@@ -8,7 +8,6 @@ permissions:
   id-token: write
 
 jobs:
-  # Step 1: Build the project and upload it to GitHub Pages
   build:
     runs-on: ubuntu-latest
     steps:
@@ -23,7 +22,6 @@ jobs:
         with:
           path: out/
 
-  # Step 2: Deploy to GitHub Pages
   deploy:
     environment:
       name: github-pages
@@ -38,16 +36,14 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-  # Step 3: Create Release Draft with Release Drafter
-  release-drafter:
-    name: Release Drafter
+  repository-dispatch:
+    name: Repository Dispatch Trigger
     runs-on: ubuntu-latest
-    needs: deploy
     steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v4
+      - name: Checkout code based on ref
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.client_payload.ref }}
 
-      - name: Draft the Release Notes ✍️
-        uses: release-drafter/release-drafter@v6
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Echo SHA from payload
+        run: echo ${{ github.event.client_payload.sha }}
