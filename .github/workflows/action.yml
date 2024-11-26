@@ -3,7 +3,9 @@ name: Build and Deploy
 on: push
 
 permissions:
-  contents: write 
+  contents: write
+  pages: write
+  id-token: write
 
 jobs:
   build:
@@ -34,20 +36,17 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-  build-and-deploy:
+  web-deploy:
+    name: 🎉 FTP Deploy
     runs-on: ubuntu-latest
     needs: build
-    concurrency: ci-${{ github.ref }} 
     steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v4
-
-      - name: Install and Build 🔧
-        run: |
-          npm install
-          npm run build
-
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: build 
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v4
+    
+    - name: 📂 Sync files to FTP server
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      with:
+        server: ftp.samkirkland.com
+        username: myFtpUserName
+        password: ${{ secrets.ftp_password }}
